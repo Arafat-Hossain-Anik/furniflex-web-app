@@ -1,0 +1,33 @@
+.link-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.footer-link {
+    color: #81859f;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.link-margin {
+    margin-top: 0;
+    margin-right: 8px;
+}
+
+.custom-divider {
+    height: 2px;
+    background-color: #252948;
+    margin: 20px 0;
+    width: 100%;
+    border: none;
+}
+
+.copyright {
+    font-size: 18px;
+    font-weight: 600;
+    color: #323544;
+    ;
+}
