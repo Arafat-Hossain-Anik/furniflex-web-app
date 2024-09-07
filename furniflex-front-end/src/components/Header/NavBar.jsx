@@ -1,7 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import './NavBar.css'
+import { useApp } from "../../Context/AppContext";
 const NavBar = () => {
+    const { cart } = useApp()
     return (
         <div>
             <nav className="navbar navbar-expand-lg">
@@ -64,6 +66,7 @@ const NavBar = () => {
                                         to="/cart"
                                         activeClassName="active">
                                         <FaCartShopping style={{ fontSize: "18px" }} />
+                                        {cart.length}
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">

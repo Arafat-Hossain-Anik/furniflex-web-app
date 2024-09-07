@@ -1,19 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useApp } from "../../Context/AppContext";
+/* eslint-disable react/prop-types */
+const SingleProduct = ({ item }) => {
+    console.log(item);
+    const [quantity, setQuantity] = useState(item.quantity);
 
-const SingleProduct = () => {
-    const [quantity, setQuantity] = useState(1);
+    const { updateCartItemQuantity } = useApp();
+
+
+    useEffect(() => {
+        updateCartItemQuantity(item.id, quantity);
+    }, [quantity, item.id, updateCartItemQuantity]);
+
 
     const increaseQuantity = () => {
-        setQuantity(quantity + 1);
+        setQuantity((prevQuantity) => prevQuantity + 1);
     };
+
 
     const decreaseQuantity = () => {
         if (quantity > 1) {
-            setQuantity(quantity - 1);
+            setQuantity((prevQuantity) => prevQuantity - 1);
         }
     };
-    const image = "https://raw.githubusercontent.com/GolamMuntakim/Akij-job-task/main/public/images/chair1.JPG";
-    const price = 300;
+
     return (
         <div className="order-prod-container">
             <div className="d-flex justify-content-between">
@@ -25,10 +35,10 @@ const SingleProduct = () => {
                     </div>
                     <div className='d-flex align-items-center' style={{ gap: "10px" }}>
                         <div className="d-flex justify-content-center align-items-center mt-3" style={{ width: "88px", height: "88px", backgroundColor: "#f2f2f2", borderRadius: "5px" }}>
-                            <img src={image} className="card-img-top img-fluid" alt="..." style={{ borderRadius: "5px" }} />
+                            <img src={item.image} className="card-img-top img-fluid" alt="..." style={{ borderRadius: "5px" }} />
                         </div>
                         <div>
-                            <h5 style={{ fontSize: "16px", fontWeight: "700", color: "#434343" }}>Product Name</h5>
+                            <h5 style={{ fontSize: "16px", fontWeight: "700", color: "#434343" }}>{item.title}</h5>
                         </div>
                     </div>
                 </div>
@@ -37,7 +47,7 @@ const SingleProduct = () => {
                 </div>
             </div>
             <div>
-                <h5 className="text-end" style={{ fontSize: "16px", fontWeight: "700", color: "#00" }}>$ {price * quantity}</h5>
+                <h5 className="text-end" style={{ fontSize: "16px", fontWeight: "700", color: "#00" }}>$ {item.price * quantity}</h5>
                 <hr />
             </div>
         </div>

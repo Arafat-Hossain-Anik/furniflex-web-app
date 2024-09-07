@@ -2,6 +2,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 const { userModel, productModel } = require('./models/allModels')
 const connection = require("./dbConfig/dbConfig")
 const checkUser = require("./middlewares/checkUser")
@@ -11,6 +12,7 @@ require('dotenv').config()
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors())
 const port = process.env.PORT;
 
 // api end points
@@ -97,7 +99,7 @@ app.get('/products', async (req, res) => {
 
 // app.post('/all-products', async (req, res) => {
 //     try {
-//         const product = fs.readFileSync('./fakeData/products.json', 'utf8')
+//         const product = fs.readFileSync('./fakeData/chairDetails.json', 'utf8')
 //         const result = await productModel.create(JSON.parse(product))
 //         console.log("All data inserted");
 //         res.send(result)

@@ -18,32 +18,16 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    discountPercentage: {
+    prevPrice: {
         type: Number,
-        required: true
-    },
-    rating: {
-        type: Number,
-        required: true
-    },
-    stock: {
-        type: Number,
-        required: true
-    },
-    brand: {
-        type: String,
         required: true
     },
     category: {
         type: String,
         required: true
     },
-    thumbnail: {
+    image: {
         type: String,
-        required: true
-    },
-    images: {
-        type: [String],
         required: true
     }
 });

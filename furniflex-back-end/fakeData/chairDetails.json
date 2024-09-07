@@ -2,9 +2,73 @@
     {
         "id": "1",
         "title": "Recliner Chair Wood",
-        "image": "",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/k5kk9jl4ky9jawaznmsv.jpg",
         "price": "299.00",
         "prevPrice": "350.00",
         "category": "rockingChair",
+        "description": "It has a backrest that can be tilted back, and often a footrest extended"
+    },
+    {
+        "id": "2",
+        "title": "Timber Ride Padded",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/rlnjykfluzvckjmnmcat.jpg",
+        "price": "59.00",
+        "prevPrice": "75.00",
+        "category": "rockingChair",
+        "description": "High Back Rocking Side Pocket Portable Folding Outdoor Camping Chairs"
+    },
+    {
+        "id": "3",
+        "title": "Colored Wooden Chair",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/ozqwab2jefpjjd72dsga.jpg",
+        "price": "299.00",
+        "prevPrice": "350.00",
+        "category": "rockingChair",
+        "description": "It has a backrest that can be tilted back, and often a footrest extended"
+    },
+    {
+        "id": "4",
+        "title": "Blank Bamboo Wicker",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/sepkkdi0dw3y9j9afy0r.jpg",
+        "price": "299.00",
+        "prevPrice": "350.00",
+        "category": "rockingChair",
+        "description": "Lightweight, easy to clean, sturdy, safe and stable. Non-slip legs"
+    },
+    {
+        "id": "5",
+        "title": "Isolated Wooden Rock",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/votkpqyokmkggnibpotk.jpg",
+        "price": "165.00",
+        "prevPrice": "400.00",
+        "category": "rockingChair",
+        "description": "It has a backrest that can be tilted back, and often a footrest extended"
+    },
+    {
+        "id": "6",
+        "title": "Minimal Empty Rocking",
+        "image": "https://res.cloudinary.com/dyvgbw32i/image/upload/v1725727012/furniflex/htndj7w4zjeqmuz03di3.jpg",
+        "price": "299.00",
+        "prevPrice": "350.00",
+        "category": "rockingChair",
+        "description": "A seat, especially for one person, usually having four legs for support."
+    },
+    {
+        "id": "7",
+        "title": "Side Chair Wood",
+        "image": "https://www.hermanmiller.com/content/dam/hmicom/page_assets/products/naughtone/always_side_chair/mh_prd_ovw_always_side_chair.jpg.rendition.480.360.jpg",
+        "price": "300.00",
+        "prevPrice": "350.00",
+        "category": "sideChair",
+        "description": "Furry Sherpa Elegant Armchair with Cozy Soft Padded, Suitable for Living Room Bedroom Reception"
+    },
+    {
+        "id": "8",
+        "title": "Comft Lounge Chair",
+        "image": "https://www.theleatherbd.com/wp-content/uploads/2021/08/eames-lounge-chair-2.jpg",
+        "price": "250.00",
+        "prevPrice": "450.00",
+        "category": "loungeChair",
+        "description": "A lounge chair or accent chair can offer the best of both for late-night TV watching or book reading"
     }
 ]
