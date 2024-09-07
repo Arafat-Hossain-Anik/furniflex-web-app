@@ -85,7 +85,7 @@ app.get('/logout', (req, res) => {
     res.json({ message: 'Logged out successfully' });
 });
 
-app.get('/products', checkUser, async (req, res) => {
+app.get('/products', async (req, res) => {
     try {
         const products = await productModel.find({})
         res.send(products)
