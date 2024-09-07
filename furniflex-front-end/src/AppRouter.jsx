@@ -5,6 +5,7 @@ import Products from "./components/Products/Products.jsx";
 import Login from "./pages/Login/Login.jsx";
 import SignUp from "./pages/SignUp/SignUp.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
+import Cart from "./pages/Cart/Cart.jsx";
 
 const router = createBrowserRouter([
     {
@@ -17,15 +18,19 @@ const router = createBrowserRouter([
                 element: <Products />
             },
             {
-                path: "/login",
-                element: <Login />
-            },
-            {
-                path: "/signup",
-                element: <SignUp />
+                path: "/cart",
+                element: <Cart />
             }
         ]
     },
+    {
+        path: "/login",
+        element: <Login />
+    },
+    {
+        path: "/signup",
+        element: <SignUp />
+    }
 ]);
 
 

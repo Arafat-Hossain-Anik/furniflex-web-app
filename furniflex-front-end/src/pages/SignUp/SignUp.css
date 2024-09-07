@@ -1,0 +1,60 @@
+.signup-form-container {
+    background: white;
+    padding: 50px;
+}
+
+.form-content {
+    background: #FAFAFA;
+    border: 1px solid #f5f5f5;
+    width: 90%;
+    max-width: 500px;
+    aspect-ratio: 500 / 618;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.sign-up-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.sign-up-btn:hover {
+    background-color: #333;
+}
+
+/* General button styles */
+.btn-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: white;
+    color: black;
+    border: 1px solid #D9D9D9
+}
+
+.btn-brand:hover {
+    background-color: #ebebeb;
+}
+
+.icon {
+    margin-right: 10px;
+    font-size: 24px;
+}

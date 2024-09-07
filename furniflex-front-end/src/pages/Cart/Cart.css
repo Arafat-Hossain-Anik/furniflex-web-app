@@ -1,0 +1,61 @@
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-controls button,
+.quantity-controls .quantity-display {
+    padding: 5px 15px;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    color: #333;
+    cursor: pointer;
+}
+
+.quantity-controls .quantity-display {
+    background-color: white;
+    border-left: none;
+    border-right: none;
+}
+
+.quantity-controls button {
+    background-color: #f0f0f0;
+}
+
+.quantity-controls .decrease-btn {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.quantity-controls .increase-btn {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.quantity-controls button:active {
+    background-color: #ccc;
+}
+
+.remove-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 3px 7px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.remove-btn:hover {
+    background-color: #ff7875;
+}
+
+.order-prod-container,
+.order-details-container {
+    background: #FAFAFA;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.order-details-container {}

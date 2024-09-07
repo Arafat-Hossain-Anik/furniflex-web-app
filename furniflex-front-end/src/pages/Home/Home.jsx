@@ -5,7 +5,9 @@ const Home = () => {
     return (
         <div>
             <NavBar />
-            <Outlet />
+            <div className="container">
+                <Outlet />
+            </div>
             <Footer />
         </div>
     );

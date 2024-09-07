@@ -1,0 +1,23 @@
+.product-btn-container {
+    border-right: 1px solid #e8e8e8;
+    padding-right: 10px;
+}
+
+.product-btn,
+.add-card-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 100%;
+    background: none;
+}
+
+.prod-active-btn,
+.add-card-btn {
+    background-color: black;
+    color: white;
+}

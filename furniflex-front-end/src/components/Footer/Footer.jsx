@@ -6,7 +6,7 @@ const Footer = () => {
             <div className="container">
                 <div className='d-flex justify-content-between flex-wrap'>
                     <div className='col-5'>
-                        <img src='/footer-logo.png' alt="footer-logo" style={{ height: "38px", width: "134px" }} />
+                        <img src='/src/assets/white-logo.png' alt="footer-logo" style={{ height: "38px", width: "134px" }} />
                     </div>
                     <div className='d-flex col-7 justify-content-between flex-wrap'>
                         <div className='link-container'>
