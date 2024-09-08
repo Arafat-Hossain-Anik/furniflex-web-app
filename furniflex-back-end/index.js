@@ -12,7 +12,12 @@ require('dotenv').config()
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors(
+    {
+        origin: 'http://localhost:5173',
+        credentials: true,
+    }
+))
 const port = process.env.PORT;
 
 // api end points
@@ -47,23 +52,27 @@ app.post('/registration', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
+        console.log(req.body);
         const { email, password } = req.body;
+        console.log(email);
         if (!(email && password)) {
             return res.status(400).send("Give Email and Password")
         }
         const user = await userModel.findOne({ email })
+        console.log(user);
         if (!user) {
             return res.status(401).send("Register First")
         }
         else {
             const isMatch = await bcrypt.compare(password, user.password)
+            console.log(isMatch);
             if (isMatch) {
+                user.password = undefined
                 const token = jwt.sign(
-                    { email },
+                    { user },
                     process.env.JWT_SECRET
                 )
                 user.token = token
-                user.password = undefined
                 //cookie section
                 const cookieOption = {
                     httpOnly: true,
@@ -81,13 +90,16 @@ app.post('/login', async (req, res) => {
     }
 
 })
+app.get('/verify-user', checkUser, (req, res) => {
+    res.status(200).json({ user: req.user });
+})
 app.get('/logout', (req, res) => {
     console.log("api hitted");
     res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
 });
 
-app.get('/products', async (req, res) => {
+app.get('/products', checkUser, async (req, res) => {
     try {
         const products = await productModel.find({})
         res.send(products)

@@ -6,8 +6,8 @@ const checkUser = (req, res, next) => {
         const token = cookies?.token.split(" ")[1]
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         console.log(decoded);
-        const { email } = decoded
-        req.email = email
+        const user = decoded
+        req.user = user
         next()
     } catch (error) {
         res.status(401).send("You are Unathorized")

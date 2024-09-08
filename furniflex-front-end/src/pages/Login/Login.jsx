@@ -2,19 +2,23 @@ import Hero from '../../components/Hero-Section/Hero';
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useApp } from '../../Context/AppContext';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const { login } = useApp();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
     const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => {
-        console.log(data);
+    const navigate = useNavigate();
+    const onSubmit = async (data) => {
+        await login(data);
+        navigate('/')
     }
     return (
         <div className="signup-container">
+            <Link to='/'>home</Link>
             <div className='d-flex justify-content-center flex-wrap'>
                 <div className='col-12 col-md-6 signup-form-container'>
                     <div className='form-content'>

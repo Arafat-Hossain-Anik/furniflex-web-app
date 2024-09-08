@@ -1,9 +1,18 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaCartShopping } from "react-icons/fa6";
 import './NavBar.css'
 import { useApp } from "../../Context/AppContext";
 const NavBar = () => {
-    const { cart } = useApp()
+    const { cart, logout } = useApp()
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleLogout = () => {
+        logout(); // Call the logout function
+        navigate("/login"); // Redirect to the login page
+    };
+
+    const isActive = location.pathname === "/login";
     return (
         <div>
             <nav className="navbar navbar-expand-lg">
@@ -70,12 +79,12 @@ const NavBar = () => {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink
-                                        className="nav-link"
-                                        to="/login"
-                                        activeClassName="active">
-                                        Login
-                                    </NavLink>
+                                    <button
+                                        className={`nav-link ${isActive ? "active" : ""}`} // Apply 'active' class if on '/login' path
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
                                 </li>
                             </ul>
                         </div>

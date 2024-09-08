@@ -4,14 +4,16 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useApp } from '../../Context/AppContext';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
-
+    const { signup } = useApp();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
     const { register, handleSubmit } = useForm();
     const onSubmit = (data) => {
+        signup(data)
         console.log(data);
     }
     return (

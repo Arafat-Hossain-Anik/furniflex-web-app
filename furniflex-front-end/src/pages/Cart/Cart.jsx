@@ -4,14 +4,14 @@ import './Cart.css'
 import SingleProduct from './SingleProduct';
 
 const Cart = () => {
-    const { cart } = useApp();
+    const { cart, removeFromCart } = useApp();
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     return (
         <div className="d-flex justify-content-between" style={{ gap: "20px" }}>
             <div className='col-12 col-md-8'>
                 <h2>An Overview of your order</h2>
                 {
-                    cart.map((item, index) => <SingleProduct item={item} key={index} />)
+                    cart.map((item, index) => <SingleProduct removeFromCart={removeFromCart} item={item} key={index} />)
                 }
             </div>
             <div className='col-12 col-md-4'>
