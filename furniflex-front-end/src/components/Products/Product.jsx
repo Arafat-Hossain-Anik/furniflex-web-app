@@ -1,10 +1,21 @@
 import { IoBagOutline } from "react-icons/io5";
 import { useApp } from "../../Context/AppContext";
+import { toast } from "react-toastify";
 /* eslint-disable react/prop-types */
 const Product = ({ product }) => {
     const { addToCart } = useApp()
     const handleClick = () => {
         addToCart(product)
+        toast.success('🦄 Product Added To Cart', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        });
     }
     return (
         // <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">

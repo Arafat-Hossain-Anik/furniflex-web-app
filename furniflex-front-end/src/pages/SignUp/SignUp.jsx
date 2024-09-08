@@ -1,20 +1,32 @@
 import './SignUp.css'
 import Hero from '../../components/Hero-Section/Hero';
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../Context/AppContext';
+import { toast } from 'react-toastify';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { signup } = useApp();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => {
-        signup(data)
+    const { register, handleSubmit, reset } = useForm();
+    const onSubmit = async (data) => {
+        await signup(data)
+        toast.success('Registraion Success! Please Login!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         console.log(data);
+        reset();
     }
     return (
         <div className="signup-container">
@@ -75,7 +87,7 @@ const SingUp = () => {
                         </div>
                         <div className='d-flex flex-wrap' style={{ gap: "10px" }}>
                             <button className="btn-brand btn-google">
-                                <FaGoogle className="icon" /> Sign in with Google
+                                <img src="/google-logo.png" alt="Google logo" style={{ width: "25px" }} />&nbsp;&nbsp; Sign in with Google
                             </button>
                             <button className="btn-brand btn-apple">
                                 <FaApple className="icon" /> Sign in with Apple

@@ -3,7 +3,9 @@ import { useApp } from "../../Context/AppContext";
 const SingleProduct = ({ item, removeFromCart }) => {
     const { increaseQuantity, decreaseQuantity } = useApp();
     const handleRemove = () => {
-        removeFromCart(item.id);
+        if (confirm("Are you sure? You want to remove from cart")) {
+            removeFromCart(item.id);
+        }
     }
     return (
         <div className="order-prod-container">

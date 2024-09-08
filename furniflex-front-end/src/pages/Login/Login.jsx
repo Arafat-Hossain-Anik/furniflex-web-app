@@ -1,9 +1,11 @@
 import Hero from '../../components/Hero-Section/Hero';
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash, FaGoogle, FaApple } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../Context/AppContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { login } = useApp();
@@ -12,13 +14,25 @@ const SingUp = () => {
     };
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
+    // const notify = () => toast("Wow so easy!");
     const onSubmit = async (data) => {
+        // alert("login sucees")
         await login(data);
+        toast.success('🦄 Login Successful', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+        });
         navigate('/')
     }
     return (
         <div className="signup-container">
-            <Link to='/'>home</Link>
+            {/* <Link to='/'>home</Link> */}
             <div className='d-flex justify-content-center flex-wrap'>
                 <div className='col-12 col-md-6 signup-form-container'>
                     <div className='form-content'>
@@ -65,7 +79,7 @@ const SingUp = () => {
                         </div>
                         <div className='d-flex pb-3 flex-wrap' style={{ gap: "10px" }}>
                             <button className="btn-brand btn-google">
-                                <FaGoogle className="icon" /> Sign in with Google
+                                <img src="/google-logo.png" alt="Google logo" style={{ width: "25px" }} /> &nbsp;&nbsp; Sign in with Google
                             </button>
                             <button className="btn-brand btn-apple">
                                 <FaApple className="icon" /> Sign in with Apple
