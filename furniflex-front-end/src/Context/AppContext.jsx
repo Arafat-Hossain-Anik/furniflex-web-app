@@ -1,5 +1,10 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-
+import { toast } from 'react-toastify';
+// adding firebase
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { app } from '../Firebase/firebase.config';
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider()
 export const AppContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -11,11 +16,41 @@ export const AppProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [error, setError] = useState(null)
+    //************ */ google sign in***********
+    const signInWithGoogle = async () => {
+        try {
+            setLoading(true)
+            const { email, displayName, photoURL } = await signInWithPopup(auth, googleProvider)
+            const userData = { email, displayName, photoURL }
+            if (userData) {
+                await fetch('http://localhost:5000/google-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData),
+                    credentials: 'include',
+                });
+                toast.success('Log in succesfully')
+            }
+        } catch (err) {
+            setLoading(false)
+            toast.error(err?.message)
+        }
+    }
+    //user watcher
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, currentUser => {
+            setUser(currentUser)
+            setLoading(false)
+        })
+        return () => { return unsubscribe() }
+    }, [])
+    //***********************/
     //sign up
     const signup = async (userInfo) => {
         try {
             console.log("from context", userInfo);
-            const response = await fetch('http://localhost:5000/registration', {
+            const response = await fetch('http://localhost:5000/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,15 +61,17 @@ export const AppProvider = ({ children }) => {
             const data = await response.json();
 
             if (!response.ok) {
+                setError(data.message)
                 throw new Error(data.message || 'Signup failed');
             }
             console.log(data);
+            setError(null)
             // Store user data in context (e.g., token, user info)
             // setUser(data.user);
             // setError(null); // Clear any previous errors
         } catch (err) {
             console.log(err.message);
-            // setError(err.message);
+            setError(err.message);
         }
     };
     // Simulate login
@@ -52,10 +89,33 @@ export const AppProvider = ({ children }) => {
             console.log(data);
             if (response.ok) {
                 setUser(data.user); // Set user data from API response
+                setError(null)
+                toast.success('🦄 Login Successful', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
             } else {
+                toast.warn('🦄 Login Failed', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+                setError(data.message)
                 throw new Error(data.message || 'Login failed');
             }
         } catch (error) {
+            setError(error)
             console.error('Login error:', error);
         } finally {
             setLoading(false);
@@ -67,10 +127,16 @@ export const AppProvider = ({ children }) => {
             credentials: 'include'
         });
         if (!response.ok) {
+            setError('Network response was not ok')
             throw new Error('Network response was not ok');
         }
         setUser(null);
         setProducts([]);
+        setError(null)
+        // google signout
+        if (user.displayName) {
+            signOut(auth)
+        }
     };
     // fetch product when user state is changed
     useEffect(() => {
@@ -83,12 +149,15 @@ export const AppProvider = ({ children }) => {
                     credentials: 'include'
                 });
                 if (!response.ok) {
+                    setError('Network response was not ok')
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
                 console.log(data);
                 setProducts(data);
+                setError(null)
             } catch (error) {
+                setError(error)
                 console.error('Error fetching products:', error);
             }
         };
@@ -103,12 +172,16 @@ export const AppProvider = ({ children }) => {
                     credentials: 'include',
                 });
                 const data = await response.json();
+                console.log("data reload", data.user);
                 if (response.ok) {
                     setUser(data.user);
+                    setError(null)
                 } else {
+                    setError('User not authenticated')
                     console.error('User not authenticated');
                 }
             } catch (error) {
+                setError(error)
                 console.error('Error fetching user:', error);
             } finally {
                 setLoading(false); // Set loading to false once the check is complete
@@ -148,7 +221,7 @@ export const AppProvider = ({ children }) => {
     };
 
     return (
-        <AppContext.Provider value={{ user, login, setCart, logout, signup, loading, products, cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity }}>
+        <AppContext.Provider value={{ user, error, login, setCart, logout, signup, loading, products, cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, signInWithGoogle }}>
             {children}
         </AppContext.Provider>
     );

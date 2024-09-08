@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }) => {
     if (user) {
         return children;
     }
-    else return <Navigate to="/registration" replace={true}></Navigate>
+    else return <Navigate to="/signup" replace={true}></Navigate>
 };
 
 export default PrivateRoute;

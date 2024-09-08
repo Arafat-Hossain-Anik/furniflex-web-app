@@ -4,37 +4,35 @@ import { FaEye, FaEyeSlash, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../Context/AppContext';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { login } = useApp();
+    const { login, signInWithGoogle } = useApp();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
-    // const notify = () => toast("Wow so easy!");
     const onSubmit = async (data) => {
-        // alert("login sucees")
         await login(data);
-        toast.success('🦄 Login Successful', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored"
-        });
         navigate('/')
+    }
+    const handleGoogleSignin = async () => {
+        // try {
+        // const result = await signInWithGoogle()
+        await signInWithGoogle()
+        //     console.log(result);
+        //     toast.success('Log in succesfully')
+        //     navigate("/")
+        // } catch (err) {
+        //     toast.error(err?.message)
+        // }
     }
     return (
         <div className="signup-container">
             {/* <Link to='/'>home</Link> */}
             <div className='d-flex justify-content-center flex-wrap'>
-                <div className='col-12 col-md-6 signup-form-container'>
+                <div className='col-12 col-md-6 signup-form-container mt-5'>
                     <div className='form-content'>
                         <div className='text-start'>
                             <h2 style={{ fontSize: "32px", fontWeight: "500" }}>Welcome Back!</h2>
@@ -78,7 +76,7 @@ const SingUp = () => {
                             <div className="custom-divider"></div>
                         </div>
                         <div className='d-flex pb-3 flex-wrap' style={{ gap: "10px" }}>
-                            <button className="btn-brand btn-google">
+                            <button onClick={handleGoogleSignin} className="btn-brand btn-google">
                                 <img src="/google-logo.png" alt="Google logo" style={{ width: "25px" }} /> &nbsp;&nbsp; Sign in with Google
                             </button>
                             <button className="btn-brand btn-apple">

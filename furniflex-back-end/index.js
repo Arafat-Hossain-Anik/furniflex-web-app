@@ -21,7 +21,7 @@ app.use(cors(
 const port = process.env.PORT;
 
 // api end points
-app.post('/registration', async (req, res) => {
+app.post('/signup', async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
         console.log(firstName, lastName, email, password);
@@ -79,19 +79,40 @@ app.post('/login', async (req, res) => {
                     expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
                 }
                 // res.cookie("token", `bearer ${token}`, cookieOption)
-                res.status(200).cookie("token", `bearer ${token}`, cookieOption).send({ message: "Login Successful", user })
+                res.status(200).cookie("token", `bearer ${token}`, cookieOption).json({ message: "Login Successful", user })
             }
             else {
-                res.status(401).send("Invalid Password")
+                res.status(401).json({ message: "Invalid Password" })
             }
         }
     } catch (error) {
-        res.status(401).send(error.message)
+        res.status(401).json({ message: error.message })
     }
 
 })
+app.post('/google-login', async (req, res) => {
+    try {
+        const user = req.body;
+        const token = jwt.sign(
+            { user },
+            process.env.JWT_SECRET
+        )
+        user.token = token
+        //cookie section
+        const cookieOption = {
+            httpOnly: true,
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+        }
+        // res.cookie("token", `bearer ${token}`, cookieOption)
+        res.status(200).cookie("token", `bearer ${token}`, cookieOption).json({ message: "Login Successful", user })
+
+    } catch (error) {
+        res.status(401).json({ message: error.message })
+    }
+})
 app.get('/verify-user', checkUser, (req, res) => {
-    res.status(200).json({ user: req.user });
+    const user = req.user
+    res.status(200).json({ user });
 })
 app.get('/logout', (req, res) => {
     console.log("api hitted");
@@ -102,7 +123,7 @@ app.get('/logout', (req, res) => {
 app.get('/products', checkUser, async (req, res) => {
     try {
         const products = await productModel.find({})
-        res.send(products)
+        res.json(products)
     } catch (error) {
         console.log(error);
         res.send(error)

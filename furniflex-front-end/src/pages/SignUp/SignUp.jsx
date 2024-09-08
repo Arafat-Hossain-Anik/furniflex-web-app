@@ -94,7 +94,7 @@ const SingUp = () => {
                             </button>
                         </div>
                         <div>
-                            <p style={{ fontWeight: "600", fontSize: "14px" }}>Have an account <Link to="/login">Sign In</Link></p>
+                            <p style={{ fontWeight: "600", fontSize: "14px", marginBottom: "0" }}>Have an account <Link to="/login">Sign In</Link></p>
                         </div>
                     </div>
                 </div>

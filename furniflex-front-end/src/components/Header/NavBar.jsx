@@ -3,16 +3,18 @@ import { FaCartShopping } from "react-icons/fa6";
 import './NavBar.css'
 import { useApp } from "../../Context/AppContext";
 const NavBar = () => {
-    const { cart, logout } = useApp()
+    const { cart, logout, user } = useApp()
+    console.log(user);
+    user.image = "/man-big.png"
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleLogout = () => {
-        logout(); // Call the logout function
-        navigate("/login"); // Redirect to the login page
+    const handleLogout = async () => {
+        await logout(); // Call the logout function
+        navigate("/signup"); // Redirect to the signup page
     };
 
-    const isActive = location.pathname === "/login";
+    const isActive = location.pathname === "/";
     return (
         <div>
             <nav className="navbar navbar-expand-lg">
@@ -79,19 +81,33 @@ const NavBar = () => {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <button
-                                        className={`nav-link ${isActive ? "active" : ""}`} // Apply 'active' class if on '/login' path
-                                        onClick={handleLogout}
-                                    >
-                                        Logout
-                                    </button>
+                                    <div className="dropdown">
+                                        <button className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src={user.image} alt={user.firstName} style={{ width: "30px" }} />
+                                        </button>
+                                        <ul className="dropdown-menu text-center">
+                                            <li>
+                                                <img src={user.image} alt={user.firstName} style={{ width: "30px" }} />
+                                            </li>
+                                            <li style={{ fontWeight: "600", fontSize: "14px", paddingLeft: "5px" }}>{user.firstName} {user.lastName}</li>
+                                            <li style={{ fontWeight: "600", fontSize: "14px", paddingLeft: "5px" }}>{user.email}</li>
+                                            <li>
+                                                <button
+                                                    className={`nav-link text-center ${isActive ? 'dropdown-item' : ''}`}
+                                                    onClick={handleLogout} style={{ background: "#c5eaf5", fontWeight: "600" }}
+                                                >
+                                                    Logout
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </nav>
-        </div>
+            </nav >
+        </div >
     );
 };
 

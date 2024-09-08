@@ -6,7 +6,7 @@ const checkUser = (req, res, next) => {
         const token = cookies?.token.split(" ")[1]
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         console.log(decoded);
-        const user = decoded
+        const user = decoded.user
         req.user = user
         next()
     } catch (error) {
