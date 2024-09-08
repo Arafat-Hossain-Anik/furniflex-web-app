@@ -18,15 +18,7 @@ const SingUp = () => {
         navigate('/')
     }
     const handleGoogleSignin = async () => {
-        // try {
-        // const result = await signInWithGoogle()
         await signInWithGoogle()
-        //     console.log(result);
-        //     toast.success('Log in succesfully')
-        //     navigate("/")
-        // } catch (err) {
-        //     toast.error(err?.message)
-        // }
     }
     return (
         <div className="signup-container">

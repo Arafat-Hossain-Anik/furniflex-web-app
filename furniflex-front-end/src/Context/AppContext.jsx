@@ -24,7 +24,7 @@ export const AppProvider = ({ children }) => {
             const { email, displayName, photoURL } = await signInWithPopup(auth, googleProvider)
             const userData = { email, displayName, photoURL }
             if (userData) {
-                await fetch('http://localhost:5000/google-login', {
+                await fetch('https://furniflex-backend-v1pz.onrender.com/google-login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(userData),
@@ -50,7 +50,7 @@ export const AppProvider = ({ children }) => {
     const signup = async (userInfo) => {
         try {
             console.log("from context", userInfo);
-            const response = await fetch('http://localhost:5000/signup', {
+            const response = await fetch('https://furniflex-backend-v1pz.onrender.com/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export const AppProvider = ({ children }) => {
         try {
             setLoading(true)
             console.log(userData);
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('https://furniflex-backend-v1pz.onrender.com/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
@@ -123,7 +123,7 @@ export const AppProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        const response = await fetch('http://localhost:5000/logout', {
+        const response = await fetch('https://furniflex-backend-v1pz.onrender.com/logout', {
             credentials: 'include'
         });
         if (!response.ok) {
@@ -145,7 +145,7 @@ export const AppProvider = ({ children }) => {
             if (!user) return; // Don't fetch if user is not logged in
 
             try {
-                const response = await fetch('http://localhost:5000/products', {
+                const response = await fetch('https://furniflex-backend-v1pz.onrender.com/products', {
                     credentials: 'include'
                 });
                 if (!response.ok) {
@@ -168,7 +168,7 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:5000/verify-user', {
+                const response = await fetch('https://furniflex-backend-v1pz.onrender.com/verify-user', {
                     credentials: 'include',
                 });
                 const data = await response.json();

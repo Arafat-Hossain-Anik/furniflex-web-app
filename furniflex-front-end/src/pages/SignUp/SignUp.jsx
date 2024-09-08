@@ -8,7 +8,7 @@ import { useApp } from '../../Context/AppContext';
 import { toast } from 'react-toastify';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { signup } = useApp();
+    const { signup, signInWithGoogle } = useApp();
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -27,6 +27,9 @@ const SingUp = () => {
         });
         console.log(data);
         reset();
+    }
+    const handleGoogleSignin = async () => {
+        await signInWithGoogle()
     }
     return (
         <div className="signup-container">
@@ -86,7 +89,7 @@ const SingUp = () => {
                             <div className="custom-divider"></div>
                         </div>
                         <div className='d-flex flex-wrap' style={{ gap: "10px" }}>
-                            <button className="btn-brand btn-google">
+                            <button onClick={handleGoogleSignin} className="btn-brand btn-google">
                                 <img src="/google-logo.png" alt="Google logo" style={{ width: "25px" }} />&nbsp;&nbsp; Sign in with Google
                             </button>
                             <button className="btn-brand btn-apple">
