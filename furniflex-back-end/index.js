@@ -14,12 +14,21 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors(
     {
-        origin: 'http://localhost:5173',
-        credentials: true,
+        origin: [
+            'https://furni-flex-web-app.web.app',
+            'https://furni-flex-web-app.firebaseapp.com',
+            'http://localhost:5173'
+        ],
+        credentials: true
     }
 ))
-const port = process.env.PORT;
+const port = process.env.PORT || 7000;
 
+const cookieOption = {
+    httpOnly: true,
+    sameSite: process.env?.NODE_ENV === "production" ? "none" : "strict",
+    secure: process.env?.NODE_ENV === "production" ? true : false
+};
 // api end points
 app.post('/signup', async (req, res) => {
     try {
@@ -73,12 +82,6 @@ app.post('/login', async (req, res) => {
                     process.env.JWT_SECRET
                 )
                 user.token = token
-                //cookie section
-                const cookieOption = {
-                    httpOnly: true,
-                    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
-                }
-                // res.cookie("token", `bearer ${token}`, cookieOption)
                 res.status(200).cookie("token", `bearer ${token}`, cookieOption).json({ message: "Login Successful", user })
             }
             else {
@@ -93,17 +96,12 @@ app.post('/login', async (req, res) => {
 app.post('/google-login', async (req, res) => {
     try {
         const user = req.body;
+        console.log("google login userdata", user);
         const token = jwt.sign(
             { user },
             process.env.JWT_SECRET
         )
         user.token = token
-        //cookie section
-        const cookieOption = {
-            httpOnly: true,
-            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
-        }
-        // res.cookie("token", `bearer ${token}`, cookieOption)
         res.status(200).cookie("token", `bearer ${token}`, cookieOption).json({ message: "Login Successful", user })
 
     } catch (error) {
@@ -115,8 +113,8 @@ app.get('/verify-user', checkUser, (req, res) => {
     res.status(200).json({ user });
 })
 app.get('/logout', (req, res) => {
-    console.log("api hitted");
-    res.clearCookie('token');
+    console.log("logout api hitted");
+    res.clearCookie('token', cookieOption);
     res.json({ message: 'Logged out successfully' });
 });
 
