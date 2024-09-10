@@ -19,6 +19,8 @@ const SingUp = () => {
     }
     const handleGoogleSignin = async () => {
         await signInWithGoogle()
+        console.log("google sign in");
+        navigate('/')
     }
     return (
         <div className="signup-container">

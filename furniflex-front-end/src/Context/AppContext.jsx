@@ -1,8 +1,9 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 // adding firebase
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { app } from '../Firebase/firebase.config';
+import axios from 'axios';
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider()
 export const AppContext = createContext();
@@ -20,58 +21,93 @@ export const AppProvider = ({ children }) => {
     //************ */ google sign in***********
     const signInWithGoogle = async () => {
         try {
-            setLoading(true)
-            const { email, displayName, photoURL } = await signInWithPopup(auth, googleProvider)
-            const userData = { email, displayName, photoURL }
+            const response = await signInWithPopup(auth, googleProvider)
+            const { uid, email, displayName, photoURL } = response.user
+            const userData = { uid, email, displayName, photoURL }
+            console.log("google login user", userData);
             if (userData) {
-                await fetch('https://furniflex-backend-v1pz.onrender.com/google-login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData),
-                    credentials: 'include',
+                // await fetch('https://furniflex-backend-v1pz.onrender.com/google-login', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(userData),
+                //     credentials: 'include',
+                // });
+                await axios.post('https://furniflex-backend-v1pz.onrender.com/google-login', userData, {
+                    withCredentials: true
+                })
+                setUser(userData)
+                toast.success('Login Successful!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
                 });
-                toast.success('Log in succesfully')
             }
         } catch (err) {
             setLoading(false)
+            toast.warn('🦄 Google Login Failed', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            });
             toast.error(err?.message)
         }
     }
     //user watcher
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser)
-            setLoading(false)
-        })
-        return () => { return unsubscribe() }
-    }, [])
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, currentUser => {
+    //         setUser(currentUser)
+    //         setLoading(false)
+    //     })
+    //     return () => { return unsubscribe() }
+    // }, [])
     //***********************/
     //sign up
-    const signup = async (userInfo) => {
+    const signup = async (userData) => {
         try {
-            console.log("from context", userInfo);
-            const response = await fetch('https://furniflex-backend-v1pz.onrender.com/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userInfo),
-                credentials: 'include',
-            });
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.message)
-                throw new Error(data.message || 'Signup failed');
+            setLoading(true)
+            const response = await axios.post('https://furniflex-backend-v1pz.onrender.com/signup', userData, {
+                withCredentials: true
+            })
+            const data = await response.data;
+            if (data) {
+                toast.success('Registraion Success! Please Login!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
             console.log(data);
             setError(null)
-            // Store user data in context (e.g., token, user info)
-            // setUser(data.user);
-            // setError(null); // Clear any previous errors
+            setLoading(false)
         } catch (err) {
+            toast.warn('🦄 Signup Failed. Try Again!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            });
             console.log(err.message);
             setError(err.message);
+            setLoading(false)
         }
     };
     // Simulate login
@@ -79,16 +115,14 @@ export const AppProvider = ({ children }) => {
         try {
             setLoading(true)
             console.log(userData);
-            const response = await fetch('https://furniflex-backend-v1pz.onrender.com/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData),
-                credentials: 'include',
-            });
-            const data = await response.json();
-            console.log(data);
-            if (response.ok) {
-                setUser(data.user); // Set user data from API response
+            const response = await axios.post('https://furniflex-backend-v1pz.onrender.com/login', userData, {
+                withCredentials: true
+            })
+            console.log("login axios response", axios);
+            const data = await response.data;
+            console.log("login data", data);
+            if (data) {
+                setUser(data.user);
                 setError(null)
                 toast.success('🦄 Login Successful', {
                     position: "top-center",
@@ -115,6 +149,16 @@ export const AppProvider = ({ children }) => {
                 throw new Error(data.message || 'Login failed');
             }
         } catch (error) {
+            toast.warn('🦄 Login Failed', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+            });
             setError(error)
             console.error('Login error:', error);
         } finally {
@@ -123,10 +167,11 @@ export const AppProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        const response = await fetch('https://furniflex-backend-v1pz.onrender.com/logout', {
-            credentials: 'include'
+        const response = await axios.get('https://furniflex-backend-v1pz.onrender.com/logout', {
+            withCredentials: true
         });
-        if (!response.ok) {
+        console.log(response);
+        if (!response.data.message) {
             setError('Network response was not ok')
             throw new Error('Network response was not ok');
         }
@@ -138,42 +183,17 @@ export const AppProvider = ({ children }) => {
             signOut(auth)
         }
     };
-    // fetch product when user state is changed
-    useEffect(() => {
-        console.log("fetch products", user);
-        const fetchProducts = async () => {
-            if (!user) return; // Don't fetch if user is not logged in
-
-            try {
-                const response = await fetch('https://furniflex-backend-v1pz.onrender.com/products', {
-                    credentials: 'include'
-                });
-                if (!response.ok) {
-                    setError('Network response was not ok')
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                console.log(data);
-                setProducts(data);
-                setError(null)
-            } catch (error) {
-                setError(error)
-                console.error('Error fetching products:', error);
-            }
-        };
-        fetchProducts();
-    }, [user]);
-
     // Restore user from cookies when the app initializes
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('https://furniflex-backend-v1pz.onrender.com/verify-user', {
-                    credentials: 'include',
+                setLoading(true)
+                const response = await axios.get('https://furniflex-backend-v1pz.onrender.com/verify-user', {
+                    withCredentials: true,
                 });
-                const data = await response.json();
+                const data = await response.data;
                 console.log("data reload", data.user);
-                if (response.ok) {
+                if (data) {
                     setUser(data.user);
                     setError(null)
                 } else {
@@ -184,12 +204,40 @@ export const AppProvider = ({ children }) => {
                 setError(error)
                 console.error('Error fetching user:', error);
             } finally {
-                setLoading(false); // Set loading to false once the check is complete
+                setLoading(false);
             }
         };
 
         fetchUser();
-    }, []); // Run only once when the app loads
+    }, []);
+    // fetch product when user state is changed
+    const fetchProducts = async () => {
+        if (!user) return;
+        try {
+            setLoading(true)
+            const response = await axios.get('https://furniflex-backend-v1pz.onrender.com/products', {
+                withCredentials: true
+            });
+            if (!response.data) {
+                setError('Network response was not ok')
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.data;
+            console.log(data);
+            setProducts(data);
+            setError(null)
+        } catch (error) {
+            setError(error)
+            console.error('Error fetching products:', error);
+        }
+        finally {
+            setLoading(false)
+        }
+    };
+    useEffect(() => {
+        console.log("fetch products", user);
+        fetchProducts();
+    }, [user]);
     const addToCart = (product) => {
         setCart((prevCart) => {
             const existingProduct = prevCart.find(item => item.id === product.id);

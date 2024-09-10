@@ -3,9 +3,8 @@ import Hero from '../../components/Hero-Section/Hero';
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaApple } from 'react-icons/fa';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../Context/AppContext';
-import { toast } from 'react-toastify';
 const SingUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { signup, signInWithGoogle } = useApp();
@@ -13,23 +12,15 @@ const SingUp = () => {
         setShowPassword(!showPassword);
     };
     const { register, handleSubmit, reset } = useForm();
+    const navigate = useNavigate();
     const onSubmit = async (data) => {
         await signup(data)
-        toast.success('Registraion Success! Please Login!', {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-        console.log(data);
         reset();
     }
     const handleGoogleSignin = async () => {
         await signInWithGoogle()
+        console.log("google sign in");
+        navigate('/')
     }
     return (
         <div className="signup-container">

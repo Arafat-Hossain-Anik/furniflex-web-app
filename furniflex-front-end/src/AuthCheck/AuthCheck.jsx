@@ -5,25 +5,24 @@ import { useApp } from '../Context/AppContext';
 
 // eslint-disable-next-line react/prop-types
 const AuthCheck = ({ children }) => {
-    const { user, loading } = useApp();
+    const { user, loading, products } = useApp();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!loading && user) {
-            navigate('/'); // Navigate to the home page if the user is authenticated
+        if (user && products) {
+            navigate('/');
         }
-    }, [user, loading, navigate]);
+    }, [user, navigate, products]);
 
-    // If loading, you can return a loading spinner or message
     if (loading) {
-        return <div className="d-flex align-items-center justify-content-center">
+        return <div className="d-flex align-items-center justify-content-center" style={{ height: "100vh" }}>
             <div className="spinner-border " role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>
         </div>
     }
 
-    return <>{children}</>; // Render the children if not loading
+    return <>{children}</>;
 };
 
 export default AuthCheck;
